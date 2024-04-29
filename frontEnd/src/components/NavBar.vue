@@ -35,12 +35,12 @@ export default defineComponent({
         })
 
         function logout() {
+            localStorage.clear()
             router.push('/login')
         }
 
 
         function viewCart() {
-            localStorage.clear()
             router.push('/cart')
         }
 
