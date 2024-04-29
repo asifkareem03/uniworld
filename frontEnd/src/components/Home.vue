@@ -34,8 +34,13 @@ export default defineComponent({
                     let items = resp.data.products
                     items.forEach(item => {
                         cartStr.catogorizedItems[item.category].push(item)
+                        let value = checkProduct(item.id)
+                        if (value !== 0) {
+                            let quanti = cartStr.catogorizedItems[item.category][(cartStr.catogorizedItems[item.category].length) - 1].stock
+                            cartStr.catogorizedItems[item.category][(cartStr.catogorizedItems[item.category].length) - 1].stock = quanti - value
+                        }
+
                     });
-                    console.log(cartStr.catogorizedItems)
                 }).catch(error => {
                     console.error(error)
                 })
@@ -44,6 +49,15 @@ export default defineComponent({
                router.push('/login')
             }
         })
+
+        function checkProduct(productId) {
+            const item = cartStr.items.find(item => item.id === productId);
+            if (item) {
+                return item.quantity
+            } else {
+                return 0
+            }
+        }
 
         function change(index) {
             radioButtons.forEach((buttons) => {
@@ -56,7 +70,8 @@ export default defineComponent({
             activeButton,
             radioButtons,
             cartStr,
-            change
+            change,
+            checkProduct
         }
     }
 
